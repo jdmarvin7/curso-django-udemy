@@ -15,8 +15,8 @@ PER_PAGE = int(os.environ.get('PER_PAGES', 6))
 
 
 def home(request):
-    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
-    # recipes = get_list_or_404(Recipe.objects.filter(is_published=True).order_by('-id'))
+    # recipes = Recipe.objects.filter(is_published=True).order_by('-id')
+    recipes = get_list_or_404(Recipe.objects.filter(is_published=True).order_by('-id'))
 
     page_obj, pagination_range = page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 

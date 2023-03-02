@@ -33,8 +33,21 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['last_name'], 'Ex.: Doe')
         add_attr(self.fields['username'], 'css', 'a-css-class')
 
+    first_name = forms.CharField(
+        error_messages={'required': 'Write your first name'},
+        label='First name'
+    )
+    last_name = forms.CharField(
+        error_messages={'required': 'Write your last name'},
+        label='Last name'
+    )
+    email = forms.EmailField(
+        error_messages={'required': 'E-mail is required'},
+        label='E-mail',
+        help_text='The e-mail must be valid.',
+    )
+
     password = forms.CharField(
-        required=True,
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Your password'
         }),
@@ -49,10 +62,13 @@ class RegisterForm(forms.ModelForm):
     )
 
     password2 = forms.CharField(
-        required=True,
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Repeat your password'
-        })
+        }),
+        label='Password2',
+        error_messages={
+            'required': 'Please, repeat your password'
+        }
     )
     class Meta:
         model = User
