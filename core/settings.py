@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'recipes',
     'authors',
-    # "debug_toolbar",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -122,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'recipes/static/',
+    BASE_DIR / 'base_static/',
 ]
 
 STATIC_URL = 'static/'

@@ -41,6 +41,28 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertIn('10 Minutos', content)
         self.assertEqual(len(response_context_recipes), 1)
     
+    # def test_invalid_page_query_uses_page_one(self):
+    #     for i in range(8):
+    #         kwargs = {'slug': f'r{i}', 'author_data': {'username': f'u{i}'}}
+    #         self.make_recipe(**kwargs)
+
+    #     with patch('recipes.views.PER_PAGE', new=3):
+    #         response = self.client.get(reverse('recipes-home') + '?page=12A')
+    #         self.assertEqual(
+    #             response.context['recipes'].number,
+    #             1
+    #         )
+    #         response = self.client.get(reverse('recipes:home') + '?page=2')
+    #         self.assertEqual(
+    #             response.context['recipes'].number,
+    #             2
+    #         )
+    #         response = self.client.get(reverse('recipes:home') + '?page=3')
+    #         self.assertEqual(
+    #             response.context['recipes'].number,
+    #             3
+    #         )
+    
     # def test_recipe_home_template_dont_load_recipes_not_published(self):
     #     """ Testando se vai publicar recipe caso não seja publicado """
     #     self.make_category('Category Test')
