@@ -1,10 +1,9 @@
 import time
-
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.common.by import By
 from utils.browser import make_chrome_browser
-from recipes.tests.test_recipe_base import RecipeMixin
 
-class RecipeBaseFunctionalTest(StaticLiveServerTestCase, RecipeMixin):
+class AuthorsBaseTest(StaticLiveServerTestCase):
     def setUp(self) -> None:
         self.browser = make_chrome_browser()
         return super().setUp()
@@ -14,4 +13,10 @@ class RecipeBaseFunctionalTest(StaticLiveServerTestCase, RecipeMixin):
         return super().tearDown()
     
     def sleep(self, seconds=5):
-        time.sleep(seconds)
+        return time.sleep(seconds)
+    
+    def get_by_placeholder(self, web_element, placeholder):
+        return web_element.find_element(
+            By.XPATH, f'//input[@placeholder="{placeholder}"]'
+        )
+    

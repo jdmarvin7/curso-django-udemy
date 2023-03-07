@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 
 from authors.forms.login import LoginForm
+from recipes.models import Recipe
 from .forms.register_form import RegisterForm
 from django.contrib import messages
 from django.urls import reverse
@@ -59,8 +60,8 @@ def login_view_create(request):
 
         if authenticated_user is not None:
             messages.success(request, 'You are logged in')
-            login(authenticated_user)
-            return redirect(login_url)
+            login(request, authenticated_user)
+            return redirect(reverse('authors:dashboard'))
         messages.error(request, 'Invalid credentials')
         return redirect(login_url)
     
@@ -70,10 +71,24 @@ def login_view_create(request):
 @login_required(login_url='authors:login', redirect_field_name='next')
 def logout_view(request):
     if not request.POST:
+        messages.error(request, 'Invalid logout request')
         return redirect(reverse('authors:login'))
 
     if request.POST.get('username') != request.user.username:
+        messages.error(request, 'Invalid logout user')
         return redirect(reverse('authors:login'))
 
+    messages.success(request, 'Logged out successfully')
     logout(request)
     return redirect(reverse('authors:login'))
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard(request):
+    recipes = Recipe.objects.filter(
+        is_published=False,
+        author=request.user
+    )
+
+    return render(request, 'authors/pages/dashboard.html', {
+        "recipes": recipes
+    })
