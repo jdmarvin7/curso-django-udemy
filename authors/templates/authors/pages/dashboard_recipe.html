@@ -1,0 +1,21 @@
+{% extends 'global/base.html' %} 
+{% block title %}Dashboard Recipe | {% endblock title %} 
+
+{% block content %}
+<div class="main-content center container">
+  <div>
+    <div style="text-align: center;">
+      <h2>Dashboard Recipe</h2>
+      {% include 'authors/partials/login_message.html' %}
+    </div>
+    {% include 'global/partials/messages.html' %} 
+    
+    <div class="left">
+      {% include 'global/form.html' %}
+    </div>
+    {% comment %} {% if not user.is_authenticated %}
+    {% endif %} {% endcomment %}
+  </div>
+</div>
+
+{% endblock content %}

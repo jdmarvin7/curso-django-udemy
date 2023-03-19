@@ -69,6 +69,16 @@ h6 {
   font-family: var(--font-headings);
 }
 
+img {
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+
 .container {
   max-width: 144rem;
   margin: 0 auto;
@@ -381,7 +391,9 @@ h6 {
   color: var(--color-error-dark);
 }
 
-.form-content input {
+.form-content input,
+.form-content textarea,
+.form-content select {
   width: 100%;
   padding: 1rem;
   border-radius: 0.4rem;
@@ -403,6 +415,10 @@ h6 {
 
 .inline-form {
   display: inline;
+}
+
+.left {
+  text-align: left;
 }
 
 .plaintext-button {
@@ -431,6 +447,14 @@ h6 {
 .authors-dashboard-container ul {
   list-style-type: none;
   margin: 1rem 0;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.del {
+  color: red;
 }
 
 @media (max-width: 600px) {
