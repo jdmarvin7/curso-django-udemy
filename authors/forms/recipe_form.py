@@ -48,6 +48,11 @@ class AuthorRecipeForm(forms.ModelForm):
         title = cd.get('title')
         description = cd.get('description')
 
+        if len(title) < 5:
+            self._my_errors['title'].append(
+                'Title must have at least 5 chars.'
+            )
+
         if title == description:
             self._my_errors['title'].append('Cannot be equal to description')
             self._my_errors['description'].append('Cannot be equal to title')
@@ -56,15 +61,15 @@ class AuthorRecipeForm(forms.ModelForm):
             raise forms.ValidationError(self._my_errors)
         return super_clean
     
-    def clean_title(self):
-        title = self.cleaned_data
+    # def clean_title(self):
+    #     title = self.cleaned_data
 
-        if len(title) < 5:
-            self._my_errors['title'].append(
-                'Title must have at least 5 chars.'
-            )
+    #     if len(title) < 5:
+    #         self._my_errors['title'].append(
+    #             'Title must have at least 5 chars.'
+    #         )
 
-        return title
+    #     return title
     
     def clean_preparation_time(self):
         field_value = self.cleaned_data.get('preparation_time')

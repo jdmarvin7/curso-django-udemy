@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from authors.forms.login import LoginForm
 from authors.forms.recipe_form import AuthorRecipeForm
 from recipes.models import Recipe
-from .forms.register_form import RegisterForm
+from authors.forms.register_form import RegisterForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
