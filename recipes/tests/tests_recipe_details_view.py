@@ -7,11 +7,11 @@ from recipes import views
 class RecipeDetailTest(RecipeTestBase):
 
     def test_recipe_view_function_is_correct(self):
-        view = resolve(reverse('recipes-recipe', kwargs={'id': 1}))
+        view = resolve(reverse('recipes-recipe', kwargs={'pk': 1}))
         self.assertIs(view.func, views.recipe)
 
     def test_recipe_view_function_is_correct(self):
-        view = resolve(reverse('recipes-recipe', kwargs={'id': 1}))
+        view = resolve(reverse('recipes-recipe', kwargs={'pk': 1}))
         self.assertIs(view.func, views.recipe)
 
     def test_recipe_view_returns_404_if_no_recipes_found(self):
@@ -32,5 +32,7 @@ class RecipeDetailTest(RecipeTestBase):
         """ Testando se vai publicar recipe caso não seja publicado """
         recipe = self.make_recipe(is_published=False)
 
-        response = self.client.get(reverse('recipes-recipe', args=(recipe.id,)))
+        response = self.client.get(reverse('recipes-recipe', kwargs={
+             'pk': recipe.pk
+        }))
         self.assertEqual(response.status_code, 404)

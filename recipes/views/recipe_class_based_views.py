@@ -1,5 +1,6 @@
 import os
-from django.views.generic import ListView
+from django.http import Http404
+from django.views.generic import ListView, DetailView
 
 from django.db.models import Q
 from recipes.models import Recipe
@@ -35,11 +36,23 @@ class RecipeListViewHome(RecipeListViewBase):
 class RecipeListViewCategory(RecipeListViewBase):
     template_name = 'recipes/pages/category.html'
 
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        # search_term = self.request.GET.get('q', '')
+
+        ctx.update({
+            'title': f"{ctx.get('recipes')[0].category.name}"
+        })
+
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
             category__id=self.kwargs.get('category_id')
         )
+
+        if not qs:
+            raise Http404()
+        
         return qs
     
 class RecipeListViewSearch(RecipeListViewBase):
@@ -47,6 +60,10 @@ class RecipeListViewSearch(RecipeListViewBase):
 
     def get_queryset(self, *args, **kwargs):
         search_term = self.request.GET.get('q', '')
+
+        if not search_term:
+            raise Http404()
+        
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
             Q(
@@ -68,3 +85,28 @@ class RecipeListViewSearch(RecipeListViewBase):
 
         return ctx
 
+class RecipeDetail(DetailView):
+    model = Recipe
+    context_object_name = 'recipe'
+    template_name = 'recipes/pages/recipe-view.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        
+        if not qs:
+            raise Http404()
+        
+        qs.filter(
+            is_published=True
+        )
+
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+
+        ctx.update({
+            'is_detail_page': True
+        })
+
+        return ctx

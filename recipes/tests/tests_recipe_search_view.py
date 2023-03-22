@@ -7,7 +7,7 @@ class RecipeSearchViewTest(RecipeTestBase):
     
     def test_recipe_search_view_function_is_correct(self):
         view = resolve(reverse('recipes-search'))
-        self.assertIs(view.func, views.search)
+        self.assertIs(view.func.view_class, views.RecipeListViewSearch)
 
     def test_recipe_search_raises_404_if_no_search_term(self):
         response = self.client.get(reverse('recipes-search'))
