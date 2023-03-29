@@ -24,6 +24,7 @@ class RecipeAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ('title',)
     }
-    inlines = [
-        TagInline
-    ]
+    autocomplete_fields = 'tags',
+    # inlines = [
+    #     TagInline
+    # ]

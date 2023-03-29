@@ -4,7 +4,7 @@ from .base import AuthorsBaseTest, By
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-@pytest.mark.funciona_test
+@pytest.mark.functional_test
 class AuthorsLoginTest(AuthorsBaseTest):
     def test_user_valid_data_can_login_successfully(self):
         string_password = 'pass'

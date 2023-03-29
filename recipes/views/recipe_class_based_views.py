@@ -122,13 +122,13 @@ class RecipeListViewTag(RecipeListViewBase):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
-            tags__sulg=self.kwargs.get('slug', '')
+            tags__slug=self.kwargs.get('slug', '')
         )
         return qs
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        page_title = Tag.objects.filter(sulg=self.kwargs.get('slug', ''))
+        page_title = Tag.objects.filter(slug=self.kwargs.get('slug', ''))
 
         if not page_title:
             page_title = 'No recipes found'

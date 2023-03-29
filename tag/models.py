@@ -12,6 +12,9 @@ class Tag(models.Model):
 
     # Aqui começam os campos para a relação genérica
 
+    """
+    # Esse trecho torna o código uma generic relation
+
     # Representa o model que queremos encaixar aqui
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     # Representa o id da linha do model descrito acima
@@ -19,6 +22,8 @@ class Tag(models.Model):
     # Um campo que representa a relação genérica que conhece os
     # campos acima (content_type e object_id)
     content_object = GenericForeignKey('content_type', 'object_id')
+    
+    """
 
     def save(self, *args, **kwargs):
         if not self.slug:
