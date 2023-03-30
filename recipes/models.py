@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.contrib.contenttypes.fields import GenericRelation
 from tag.models import Tag
+from django.utils.translation import gettext_lazy as _
 
 
 class Category(models.Model):
@@ -17,7 +18,7 @@ class Category(models.Model):
     
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, verbose_name=_('Title'))
     description = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     preparation_time = models.IntegerField()
@@ -39,7 +40,7 @@ class Recipe(models.Model):
         default=None
     )
     # tags = GenericRelation(Tag, related_query_name='recipes')
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True, default='')
 
     def __str__(self) -> str:
         return self.title
@@ -69,4 +70,8 @@ class Recipe(models.Model):
 
         if error_messages:
             raise ValidationError(error_messages)
+        
+    class Meta:
+        verbose_name = _('Recipe')
+        verbose_name_plural = _('Recipes')
     

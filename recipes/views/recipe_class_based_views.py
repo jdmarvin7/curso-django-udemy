@@ -1,6 +1,8 @@
 import os
 from django.http import Http404
 from django.views.generic import ListView, DetailView
+from django.utils import translation
+from django.utils.translation import gettext as _
 
 from django.db.models import Q
 from recipes.models import Recipe
@@ -22,7 +24,7 @@ class RecipeListViewBase(ListView):
             is_published=True,
         )
 
-        qs = qs.select_related('author', 'category')
+        qs = qs.select_related('author', 'category', 'author__profile')
         # qs = qs.prefetch_related('author', 'category')
         qs = qs.prefetch_related('tags')
 
@@ -32,7 +34,13 @@ class RecipeListViewBase(ListView):
         context = super().get_context_data(*args, **kwargs)
         page_obj, pagination_range = make_pagination(self.request, context.get('recipes'), PER_PAGE)
 
-        context.update({ 'recipes': page_obj, 'pagination_range': pagination_range })
+        html_language = translation.get_language()
+
+        context.update({ 
+            'recipes': page_obj, 
+            'pagination_range': pagination_range,
+            'html_language': html_language,
+            })
         return context
     
 class RecipeListViewHome(RecipeListViewBase):
@@ -43,21 +51,24 @@ class RecipeListViewCategory(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        # search_term = self.request.GET.get('q', '')
+        category_translation = _('Category')
 
         ctx.update({
-            'title': f"{ctx.get('recipes')[0].category.name}"
+            'title': f'{ctx.get("recipes")[0].category.name} - '
+            f'{category_translation} | '
         })
+
+        return ctx
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
-            category__id=self.kwargs.get('category_id')
+            category__id=self.kwargs.get('pk')
         )
 
         if not qs:
             raise Http404()
-        
+
         return qs
     
 class RecipeListViewSearch(RecipeListViewBase):
